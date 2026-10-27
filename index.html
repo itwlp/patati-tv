@@ -4,137 +4,88 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
-<title>TV do Patati</title>
-<link rel="preconnect" href="https://www.youtube.com">
+<title>Patati de hoje</title>
 <style>
-  :root{color-scheme:dark;--bg:#0f0d1a;--ink:#fff8e7;--muted:#b9b3cc;--sun:#f2b705;--red:#e23d2d;--teal:#1fb6ad;--panel:#1b1830}
+  :root{--bg:#fff8e7;--surface:#ffffff;--ink:#1d1b2b;--muted:#66637a;--line:#e3dfcf;--accent:#d93a2b;--sun:#f2b705;--teal:#167c78}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#13121a;--surface:#1d1b26;--ink:#efedf7;--muted:#a29fb6;--line:#312e3d;--accent:#ff6b5b;--sun:#f5c842;--teal:#4cc4bd}}
+  :root[data-theme="dark"]{--bg:#13121a;--surface:#1d1b26;--ink:#efedf7;--muted:#a29fb6;--line:#312e3d;--accent:#ff6b5b;--sun:#f5c842;--teal:#4cc4bd}
   *{box-sizing:border-box}
-  html,body{height:100%;margin:0}
-  body{background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",system-ui,sans-serif;display:flex;flex-direction:column;overflow:hidden}
-  header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 20px;background:linear-gradient(90deg,var(--red),var(--sun) 60%,var(--teal));color:#1a1206}
-  header h1{margin:0;font-size:clamp(1.1rem,2.6vw,1.6rem);letter-spacing:.02em}
-  header .dots{display:flex;gap:8px}
-  header .dots i{width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,.25);display:inline-block}
-  header .dots i.on{background:#1a1206}
-  main{flex:1;display:grid;place-items:center;position:relative;padding:12px}
-  #player{width:min(100%,calc((100vh - 140px) * 16 / 9));aspect-ratio:16/9;background:#000;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6)}
-  #player iframe{width:100%;height:100%;border:0;display:block}
-  .cover{position:absolute;inset:0;display:grid;place-items:center;background:var(--bg);text-align:center;padding:24px}
-  .cover[hidden]{display:none}
-  .cover h2{font-size:clamp(1.6rem,5vw,3rem);margin:0 0 12px}
-  .cover p{color:var(--muted);font-size:clamp(1rem,2.2vw,1.3rem);max-width:40ch;margin:0 0 24px}
-  .big{font:inherit;font-size:clamp(1.3rem,3.5vw,2.2rem);font-weight:700;border:0;border-radius:999px;padding:18px 44px;background:var(--sun);color:#1a1206;cursor:pointer;box-shadow:0 10px 30px rgba(242,183,5,.35)}
-  .big:focus-visible{outline:4px solid #fff;outline-offset:3px}
-  footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 20px;font-size:.95rem;color:var(--muted);min-height:44px}
-  footer #titulo{color:var(--ink);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .pai{display:none;gap:8px}
-  body.pai .pai{display:flex}
-  .mini{font:inherit;font-size:.9rem;font-weight:700;border:1px solid var(--muted);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
-  .clown{font-size:clamp(3rem,10vw,6rem);line-height:1;margin-bottom:8px}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Trebuchet MS",system-ui,-apple-system,sans-serif}
+  .wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px;display:flex;flex-direction:column;gap:16px}
+  header{display:flex;align-items:center;gap:12px}
+  header .ico{font-size:2.4rem;line-height:1}
+  h1{margin:0;font-size:1.6rem;line-height:1.15}
+  .sub{margin:2px 0 0;color:var(--muted);font-size:.95rem}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+  .play{display:block;text-align:center;text-decoration:none;font-weight:700;font-size:1.25rem;padding:18px 20px;border-radius:999px;background:var(--accent);color:#fff;box-shadow:0 8px 24px rgba(217,58,43,.25)}
+  .play:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+  ol{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:8px}
+  ol li a{color:var(--ink);text-decoration:none;font-weight:700}
+  ol li a:hover{text-decoration:underline}
+  .dur{color:var(--muted);font-weight:400;white-space:nowrap}
+  .meta{color:var(--muted);font-size:.9rem;margin:0}
+  .dia{display:flex;flex-direction:column;gap:6px;padding:12px 0;border-top:1px solid var(--line)}
+  .dia:first-child{border-top:0;padding-top:0}
+  .dia a.p{font-weight:700;color:var(--teal);text-decoration:none}
+  .warn{background:#fde8e5;color:#7a1f16;border-radius:12px;padding:10px 14px;font-size:.92rem}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .warn{background:#3a1f1d;color:#ffb9b0}}
+  details summary{cursor:pointer;font-weight:700}
 </style>
 </head>
 <body>
-<header>
-  <h1>TV do Patati</h1>
-  <div class="dots" id="dots" aria-label="Vídeos de hoje"></div>
-</header>
-<main>
-  <div id="player"><div id="yt"></div></div>
-  <div class="cover" id="inicio">
-    <div class="clown">🤡</div>
-    <h2>Hora do Patati!</h2>
-    <p id="inicioInfo">Carregando a lista de hoje…</p>
-    <button class="big" id="comecar" hidden>▶ Começar</button>
-  </div>
-  <div class="cover" id="fim" hidden>
-    <div class="clown">🌙</div>
-    <h2>Acabou por hoje!</h2>
-    <p>Os vídeos de hoje já passaram. Amanhã tem mais Patati.</p>
-    <button class="mini pai" id="resetar">Liberar de novo (pais)</button>
-  </div>
-</main>
-<footer>
-  <span id="titulo"></span>
-  <span class="pai"><button class="mini" id="pular">Pular</button><button class="mini" id="sairPai">Sair do modo pais</button></span>
-  <span id="rodape"></span>
-</footer>
+<div class="wrap">
+  <header>
+    <div class="ico" aria-hidden="true">🤡</div>
+    <div>
+      <h1 id="titulo">Patati de hoje</h1>
+      <p class="sub" id="sub">Carregando o plano…</p>
+    </div>
+  </header>
+  <div id="aviso" class="warn" hidden></div>
+  <section class="card" id="hoje" hidden>
+    <a class="play" id="tocar" href="#" target="_blank" rel="noopener">▶ Tocar o pacote de hoje</a>
+    <ol id="lista"></ol>
+    <p class="meta">Abra no app YouTube do celular e toque em transmitir para a TV. Desligue a reprodução automática no player para a fila parar no fim.</p>
+  </section>
+  <section class="card" id="proximos" hidden>
+    <details>
+      <summary>Próximos dias</summary>
+      <div id="dias" style="margin-top:12px"></div>
+    </details>
+  </section>
+  <p class="meta" id="rodape"></p>
+</div>
 <script>
 (function(){
   const $ = s => document.querySelector(s);
-  const hoje = () => { const d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
-  const diaN = () => Math.floor((Date.now() - new Date().getTimezoneOffset()*60e3) / 864e5);
-  const KEY = 'patati-tv:'+hoje();
-  const store = { get(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(_){ return {}; } }, set(v){ try{ localStorage.setItem(KEY, JSON.stringify(v)); }catch(_){} } };
-
-  let lista = [], porDia = 5, vistos = 0, idx = 0, player = null, pronto = false;
-
-  // Modo pais: ?pai=1 na URL, ou 5 toques no título em 3 s.
-  const url = new URL(location.href);
-  if(url.searchParams.get('pai') === '1') document.body.classList.add('pai');
-  let toques = []; $('header h1').addEventListener('click', () => { const t = Date.now(); toques = toques.filter(x => t - x < 3000).concat(t); if(toques.length >= 5){ document.body.classList.add('pai'); toques = []; } });
-  $('#sairPai').onclick = () => document.body.classList.remove('pai');
-
-  function escolherHoje(pool, n){
-    if(!pool.length) return [];
-    // janela cíclica que avança n posições por dia: todos os vídeos entram no rodízio
-    const ordenado = pool.slice().sort((a,b) => a.id.localeCompare(b.id));
-    const inicio = (diaN() * n) % ordenado.length;
-    const out = [];
-    for(let i=0; i<Math.min(n, ordenado.length); i++) out.push(ordenado[(inicio+i) % ordenado.length]);
-    return out;
-  }
-
-  function dots(){
-    $('#dots').innerHTML = lista.map((_,i) => `<i class="${i < vistos ? 'on' : ''}"></i>`).join('');
-    $('#rodape').textContent = lista.length ? `${Math.min(vistos+1, lista.length)} de ${lista.length}` : '';
-  }
-
-  function carregarVideo(i){
-    if(i >= lista.length){ fim(); return; }
-    idx = i; const v = lista[i];
-    $('#titulo').textContent = v.title;
-    dots();
-    if(player) player.loadVideoById(v.id);
-  }
-
-  function fim(){
-    if(player) try{ player.stopVideo(); }catch(_){}
-    $('#fim').hidden = false; $('#titulo').textContent = '';
-  }
-
-  function registrarVisto(){
-    vistos++; const s = store.get(); s.vistos = vistos; store.set(s); dots();
-    if(vistos >= lista.length) fim(); else carregarVideo(vistos);
-  }
-
-  window.onYouTubeIframeAPIReady = function(){
-    player = new YT.Player('yt', {
-      videoId: lista.length ? lista[0].id : undefined,
-      playerVars: { rel:0, modestbranding:1, playsinline:1, controls:1, disablekb:1, fs:0, iv_load_policy:3, hl:'pt-BR', cc_load_policy:0 },
-      events: {
-        onReady: () => { pronto = true; $('#comecar').hidden = !lista.length; },
-        onStateChange: e => { if(e.data === YT.PlayerState.ENDED) registrarVisto(); },
-        onError: () => { // vídeo indisponível ou sem permissão de embed: pula sem contar
-          lista.splice(idx, 1); dots(); if(idx < lista.length) carregarVideo(idx); else fim(); }
-      }
-    });
-  };
-
-  $('#comecar').onclick = () => { $('#inicio').hidden = true; carregarVideo(vistos); player.playVideo(); };
-  $('#pular').onclick = () => { if(player && $('#inicio').hidden && $('#fim').hidden) registrarVisto(); };
-  $('#resetar').onclick = () => { vistos = 0; store.set({vistos:0}); $('#fim').hidden = true; $('#inicio').hidden = false; dots(); };
-
-  fetch('playlist.json', {cache:'no-store'}).then(r => r.json()).then(p => {
-    porDia = p.porDia || 5;
-    const pool = (p.videos || []).filter(v => v && v.id);
-    lista = escolherHoje(pool, porDia);
-    vistos = Math.min(store.get().vistos || 0, lista.length);
-    dots();
-    if(!lista.length){ $('#inicioInfo').textContent = 'A lista de hoje está vazia. Peça para os pais atualizarem.'; return; }
-    $('#inicioInfo').textContent = `${lista.length} vídeos para hoje, cerca de ${Math.round(lista.reduce((a,v)=>a+(v.dur||0),0)/60)} minutos.`;
-    if(vistos >= lista.length){ $('#inicio').hidden = true; fim(); }
-    const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(s);
-  }).catch(() => { $('#inicioInfo').textContent = 'Não consegui carregar a lista. Confira a internet e recarregue.'; });
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const chave = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  const nome = iso => { const p = iso.split('-').map(Number); return new Date(p[0], p[1]-1, p[2]).toLocaleDateString('pt-BR', {weekday:'long'}); };
+  const dm = iso => iso.slice(8) + '/' + iso.slice(5,7);
+  const pacote = d => 'https://www.youtube.com/watch_videos?video_ids=' + d.videos.map(v => encodeURIComponent(v.id)).join(',');
+  const curto = t => String(t).replace(/^Patati Patatá\s*[-–]?\s*/, '');
+  fetch('plano.json?v=' + Date.now(), {cache:'no-store'}).then(r => r.json()).then(p => {
+    const dias = (p.dias || []).filter(d => d.videos && d.videos.length);
+    if(!dias.length){ $('#sub').textContent = 'O plano está vazio. Peça para atualizar.'; return; }
+    const hoje = chave(new Date());
+    const futuros = dias.filter(d => d.data >= hoje);
+    const d0 = futuros[0] || dias[dias.length-1];
+    const ehHoje = d0.data === hoje;
+    $('#titulo').textContent = ehHoje ? 'Patati de hoje' : 'Patati de ' + nome(d0.data);
+    $('#sub').textContent = nome(d0.data) + ', ' + dm(d0.data) + ' · ' + d0.videos.length + ' vídeos · ' + d0.total_min + ' min';
+    $('#tocar').href = pacote(d0);
+    $('#tocar').textContent = '▶ Tocar o pacote de ' + (ehHoje ? 'hoje' : nome(d0.data));
+    $('#lista').innerHTML = d0.videos.map(v => `<li><a href="${esc(v.url)}" target="_blank" rel="noopener">${esc(curto(v.title))}</a> <span class="dur">${esc(v.duracao)}</span></li>`).join('');
+    $('#hoje').hidden = false;
+    const resto = futuros.slice(1);
+    if(resto.length){
+      $('#dias').innerHTML = resto.map(d => `<div class="dia"><a class="p" href="${esc(pacote(d))}" target="_blank" rel="noopener">▶ Pacote de ${esc(nome(d.data))} (${esc(dm(d.data))}) · ${d.total_min} min</a><p class="meta">${d.videos.map(v => esc(curto(v.title))).join(' · ')}</p></div>`).join('');
+      $('#proximos').hidden = false;
+    }
+    const ultimo = dias[dias.length-1].data;
+    if(ultimo < hoje){ $('#aviso').textContent = 'O plano acabou em ' + dm(ultimo) + '. Ele é renovado toda semana; se ficou parado, o notebook estava desligado.'; $('#aviso').hidden = false; }
+    $('#rodape').textContent = 'Plano gerado em ' + String(p.geradoEm || '').replace('T', ' ').slice(0, 16) + ' · meta ' + (p.metaMin || 60) + ' min por dia, vídeos de ' + (p.faixa || '10-20 min') + '.';
+  }).catch(() => { $('#sub').textContent = 'Não consegui carregar o plano. Confira a internet e recarregue.'; });
 })();
 </script>
 </body>
