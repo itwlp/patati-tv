@@ -5,56 +5,111 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Patati de hoje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap">
 <style>
-  :root{--bg:#fff8e7;--surface:#ffffff;--ink:#1d1b2b;--muted:#66637a;--line:#e3dfcf;--accent:#d93a2b;--sun:#f2b705;--teal:#167c78}
-  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#13121a;--surface:#1d1b26;--ink:#efedf7;--muted:#a29fb6;--line:#312e3d;--accent:#ff6b5b;--sun:#f5c842;--teal:#4cc4bd}}
-  :root[data-theme="dark"]{--bg:#13121a;--surface:#1d1b26;--ink:#efedf7;--muted:#a29fb6;--line:#312e3d;--accent:#ff6b5b;--sun:#f5c842;--teal:#4cc4bd}
+  /* Tokens do design system Noa Vale (noa-vale-design-system) */
+  :root{
+    --bg:#efeae2;--bg-2:#e9e3d9;--card:#e4dccf;--card-edge:#cfc6b7;
+    --ink:#1e1c19;--ink-2:#4a463f;--muted:#8a8378;--line:rgba(30,28,25,.12);
+    --accent:#d4572a;--accent-deep:#b9441c;--accent-soft:#e8b39a;--paper:#f5f1ea;
+    --font-sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+    --font-script:"Instrument Serif",Georgia,serif;
+    --radius:18px;--gutter:clamp(16px,4vw,48px);
+    --shadow:0 30px 60px -30px rgba(30,28,25,.45),0 2px 0 rgba(255,255,255,.6) inset;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171717;--bg-2:#201f1d;--card:#262421;--card-edge:#3a3732;--ink:#efeae2;--ink-2:#c9c3b8;--muted:#9a9388;--line:rgba(239,234,226,.14);--accent:#e8693a;--accent-deep:#d4572a;--paper:#201f1d;--shadow:0 30px 60px -30px rgba(0,0,0,.8)}}
+  :root[data-theme="dark"]{--bg:#171717;--bg-2:#201f1d;--card:#262421;--card-edge:#3a3732;--ink:#efeae2;--ink-2:#c9c3b8;--muted:#9a9388;--line:rgba(239,234,226,.14);--accent:#e8693a;--accent-deep:#d4572a;--paper:#201f1d;--shadow:0 30px 60px -30px rgba(0,0,0,.8)}
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Trebuchet MS",system-ui,-apple-system,sans-serif}
-  .wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px;display:flex;flex-direction:column;gap:16px}
-  header{display:flex;align-items:center;gap:12px}
-  header .ico{font-size:2.4rem;line-height:1}
-  h1{margin:0;font-size:1.6rem;line-height:1.15}
-  .sub{margin:2px 0 0;color:var(--muted);font-size:.95rem}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
-  .play{display:block;text-align:center;text-decoration:none;font-weight:700;font-size:1.25rem;padding:18px 20px;border-radius:999px;background:var(--accent);color:#fff;box-shadow:0 8px 24px rgba(217,58,43,.25)}
-  .play:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
-  ol{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:8px}
-  ol li a{color:var(--ink);text-decoration:none;font-weight:700}
-  ol li a:hover{text-decoration:underline}
-  .dur{color:var(--muted);font-weight:400;white-space:nowrap}
-  .meta{color:var(--muted);font-size:.9rem;margin:0}
-  .dia{display:flex;flex-direction:column;gap:6px;padding:12px 0;border-top:1px solid var(--line)}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--font-sans);-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  h1{font-weight:500;letter-spacing:-.03em;line-height:1.02;margin:0}
+  p{margin:0}
+  .mono{font-family:var(--font-mono);letter-spacing:.06em}
+  .tiny{font-size:10.5px;line-height:1.6;text-transform:uppercase}
+  .muted{color:var(--muted)}
+  .accent{color:var(--accent)}
+
+  .site-header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:12px;height:76px;padding:0 var(--gutter);background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-mark{font-weight:600;font-size:28px;letter-spacing:-.08em;line-height:1}
+  .brand-mark .dot{color:var(--accent)}
+  .brand-text{display:flex;flex-direction:column;line-height:1.15}
+  .brand-name{font-size:14px;font-weight:500}
+  .brand-role{color:var(--muted);font-size:9px}
+  .pill{padding:7px 12px;border-radius:9px;background:var(--paper);border:1px solid var(--line);font-size:11px;color:var(--ink-2);white-space:nowrap}
+
+  .wrap{max-width:680px;margin:0 auto;padding:36px var(--gutter) 56px;display:flex;flex-direction:column;gap:22px}
+  .hero h1{font-size:clamp(38px,9vw,60px);margin:8px 0 10px}
+  .hero h1 em{font-family:var(--font-script);font-weight:400;color:var(--accent)}
+  .sub{color:var(--ink-2)}
+
+  .tcard{background:var(--card);border:1px solid var(--card-edge);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:16px}
+  .btn-discuss{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 14px 14px 26px;border-radius:12px;background:linear-gradient(180deg,var(--accent),var(--accent-deep));color:#fff;font-family:var(--font-mono);font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 12px 24px -12px rgba(185,68,28,.8);transition:transform .2s,box-shadow .2s}
+  .btn-discuss:hover{transform:translateY(-1px);box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 16px 30px -12px rgba(185,68,28,.8),0 0 0 3px rgba(212,87,42,.28)}
+  .btn-icon{display:grid;place-items:center;width:40px;height:40px;border-radius:9px;background:rgba(255,255,255,.18);font-size:15px}
+  a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+  ol{margin:0;padding:0;list-style:none;counter-reset:v;display:flex;flex-direction:column}
+  ol li{counter-increment:v;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:baseline;padding:11px 0;border-top:1px solid var(--line)}
+  ol li:first-child{border-top:0}
+  ol li::before{content:counter(v,decimal-leading-zero);font-family:var(--font-mono);font-size:10.5px;color:var(--accent);letter-spacing:.06em}
+  ol li a{font-weight:500;font-size:17px;letter-spacing:-.01em}
+  ol li a:hover{color:var(--accent)}
+  .dur{font-family:var(--font-mono);font-size:11px;color:var(--muted);white-space:nowrap}
+  .meta{color:var(--muted);font-size:.9rem}
+
+  details summary{cursor:pointer;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;list-style:none}
+  details summary::before{content:"+ ";color:var(--accent)}
+  details[open] summary::before{content:"− "}
+  .dia{display:flex;flex-direction:column;gap:6px;padding:14px 0;border-top:1px solid var(--line)}
   .dia:first-child{border-top:0;padding-top:0}
-  .dia a.p{font-weight:700;color:var(--teal);text-decoration:none}
-  .warn{background:#fde8e5;color:#7a1f16;border-radius:12px;padding:10px 14px;font-size:.92rem}
-  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .warn{background:#3a1f1d;color:#ffb9b0}}
-  details summary{cursor:pointer;font-weight:700}
+  .dia a.p{font-weight:500;color:var(--accent-deep)}
+  .dia a.p:hover{text-decoration:underline}
+  .warn{background:var(--accent-soft);color:#4a1d0c;border-radius:12px;padding:10px 14px;font-size:.92rem}
+  .site-footer{padding:20px var(--gutter) 28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted)}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="ico" aria-hidden="true">🤡</div>
-    <div>
-      <h1 id="titulo">Patati de hoje</h1>
-      <p class="sub" id="sub">Carregando o plano…</p>
-    </div>
-  </header>
+<header class="site-header">
+  <a class="brand" href="./" aria-label="Patati TV, início">
+    <span class="brand-mark">pt<span class="dot">.</span></span>
+    <span class="brand-text">
+      <span class="brand-name">Patati TV</span>
+      <span class="brand-role mono">PLANO DA SEMANA</span>
+    </span>
+  </a>
+  <span class="pill mono" id="data-pill" hidden></span>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <p class="mono tiny"><span class="accent">HOJE NA TV</span> / 1 HORA, SEM TRABALHO</p>
+    <h1 id="titulo">Patati de <em>hoje</em></h1>
+    <p class="sub" id="sub">Carregando o plano…</p>
+  </section>
+
   <div id="aviso" class="warn" hidden></div>
-  <section class="card" id="hoje" hidden>
-    <a class="play" id="tocar" href="#" target="_blank" rel="noopener">▶ Tocar o pacote de hoje</a>
+
+  <section class="tcard" id="hoje" hidden>
+    <a class="btn-discuss" id="tocar" href="#" target="_blank" rel="noopener"><span id="tocar-txt">Tocar o pacote de hoje</span><span class="btn-icon" aria-hidden="true">▶</span></a>
     <ol id="lista"></ol>
     <p class="meta">Abra no app YouTube do celular e toque em transmitir para a TV. Desligue a reprodução automática no player para a fila parar no fim.</p>
   </section>
-  <section class="card" id="proximos" hidden>
+
+  <section class="tcard" id="proximos" hidden>
     <details>
       <summary>Próximos dias</summary>
-      <div id="dias" style="margin-top:12px"></div>
+      <div id="dias" style="margin-top:14px"></div>
     </details>
   </section>
-  <p class="meta" id="rodape"></p>
-</div>
+</main>
+
+<footer class="site-footer">
+  <p class="mono tiny" id="rodape"></p>
+</footer>
 <script>
 (function(){
   const $ = s => document.querySelector(s);
@@ -71,10 +126,12 @@
     const futuros = dias.filter(d => d.data >= hoje);
     const d0 = futuros[0] || dias[dias.length-1];
     const ehHoje = d0.data === hoje;
-    $('#titulo').textContent = ehHoje ? 'Patati de hoje' : 'Patati de ' + nome(d0.data);
+    $('#titulo').innerHTML = 'Patati de <em>' + (ehHoje ? 'hoje' : esc(nome(d0.data))) + '</em>';
     $('#sub').textContent = nome(d0.data) + ', ' + dm(d0.data) + ' · ' + d0.videos.length + ' vídeos · ' + d0.total_min + ' min';
+    $('#data-pill').textContent = dm(d0.data) + ' · ' + d0.total_min + ' MIN';
+    $('#data-pill').hidden = false;
     $('#tocar').href = pacote(d0);
-    $('#tocar').textContent = '▶ Tocar o pacote de ' + (ehHoje ? 'hoje' : nome(d0.data));
+    $('#tocar-txt').textContent = 'Tocar o pacote de ' + (ehHoje ? 'hoje' : nome(d0.data));
     $('#lista').innerHTML = d0.videos.map(v => `<li><a href="${esc(v.url)}" target="_blank" rel="noopener">${esc(curto(v.title))}</a> <span class="dur">${esc(v.duracao)}</span></li>`).join('');
     $('#hoje').hidden = false;
     const resto = futuros.slice(1);
@@ -84,7 +141,7 @@
     }
     const ultimo = dias[dias.length-1].data;
     if(ultimo < hoje){ $('#aviso').textContent = 'O plano acabou em ' + dm(ultimo) + '. Ele é renovado toda semana; se ficou parado, o notebook estava desligado.'; $('#aviso').hidden = false; }
-    $('#rodape').textContent = 'Plano gerado em ' + String(p.geradoEm || '').replace('T', ' ').slice(0, 16) + ' · meta ' + (p.metaMin || 60) + ' min por dia, vídeos de ' + (p.faixa || '10-20 min') + '.';
+    $('#rodape').textContent = 'Plano gerado em ' + String(p.geradoEm || '').replace('T', ' ').slice(0, 16) + ' · meta ' + (p.metaMin || 60) + ' min por dia · vídeos de ' + (p.faixa || '10-20 min');
   }).catch(() => { $('#sub').textContent = 'Não consegui carregar o plano. Confira a internet e recarregue.'; });
 })();
 </script>
