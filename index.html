@@ -146,11 +146,46 @@
   @keyframes bob{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(calc(var(--r,0deg) + 9deg))}}
   @media (max-width:520px){.carousel{height:310px}.ring{width:190px;height:250px}.vcard .n{font-size:78px}.vcard h3{font-size:17px}}
   @media (prefers-reduced-motion:reduce){.ring{transition:none}.dust span,.toy{animation:none}.dust span{opacity:1}}
+  /* ---- Ilustrações em CSS no fundo ---- */
+  .bg b{position:absolute;display:block}
+  .sol{top:84px;right:6%;width:84px;height:84px;border-radius:50%;background:var(--yellow)}
+  .sol::before{content:"";position:absolute;inset:-26px;border-radius:50%;background:repeating-conic-gradient(var(--yellow) 0 9deg,transparent 9deg 30deg);-webkit-mask:radial-gradient(circle closest-side,transparent 61%,#000 63%);mask:radial-gradient(circle closest-side,transparent 61%,#000 63%);animation:raios 30s linear infinite}
+  @keyframes raios{to{transform:rotate(360deg)}}
+  .nuvem{left:0;width:120px;height:38px;border-radius:40px;background:#fff;filter:drop-shadow(0 5px 0 rgba(47,127,224,.16));animation:deriva 70s linear infinite}
+  .nuvem::before,.nuvem::after{content:"";position:absolute;border-radius:50%;background:#fff}
+  .nuvem::before{width:56px;height:56px;left:16px;top:-28px}
+  .nuvem::after{width:42px;height:42px;right:20px;top:-18px}
+  .nuvem.n1{top:24%}
+  .nuvem.n2{top:64%;transform:scale(.75);animation-duration:95s;animation-delay:-48s}
+  @keyframes deriva{from{translate:-180px 0}to{translate:calc(100vw + 180px) 0}}
+  .balao{left:7%;bottom:-130px;width:54px;height:66px;border-radius:50% 50% 48% 48%;background:var(--red);animation:sobe 26s ease-in-out infinite}
+  .balao::before{content:"";position:absolute;left:12px;top:10px;width:10px;height:16px;border-radius:50%;background:rgba(255,255,255,.55);transform:rotate(20deg)}
+  .balao::after{content:"";position:absolute;left:50%;top:100%;width:2px;height:72px;background:var(--ink-2);opacity:.4}
+  @keyframes sobe{0%{transform:translate(0,0) rotate(-4deg)}50%{transform:translate(26px,-60vh) rotate(5deg)}100%{transform:translate(-10px,-125vh) rotate(-4deg)}}
+  .flor{left:78%;bottom:96px;width:22px;height:22px;border-radius:50%;background:#ff7aa8;box-shadow:0 -24px #ff7aa8,23px -7px #ff7aa8,14px 19px #ff7aa8,-14px 19px #ff7aa8,-23px -7px #ff7aa8;transform-origin:50% 100px;animation:sway 6s ease-in-out infinite alternate}
+  .flor::before{content:"";position:absolute;left:50%;top:22px;width:5px;height:96px;margin-left:-2.5px;background:var(--green);border-radius:3px;z-index:-1}
+  .flor::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--yellow)}
+  @keyframes sway{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+  /* ---- Brinquedo que gira ao toque ---- */
+  .brinq-area{display:flex;flex-direction:column;align-items:center;gap:10px}
+  .brinq-wrap{filter:drop-shadow(0 14px 14px rgba(35,32,58,.22))}
+  .brinq{display:block;width:150px;height:150px;border:0;padding:0;cursor:pointer;background:var(--yellow);clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);transition:transform .25s,background .3s;animation:balanca 5s ease-in-out infinite}
+  .brinq:hover{transform:scale(1.08)}
+  .brinq:focus-visible{outline:3px solid var(--blue);outline-offset:6px}
+  .brinq.gira{animation:giraBrinq .7s cubic-bezier(.5,0,.3,1)}
+  @keyframes giraBrinq{0%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(.5)}100%{transform:rotate(360deg) scale(1)}}
+  /* ---- Cartões entram virados em 3D ---- */
+  .tcard.reveal{transform:none}
+  .tcard.reveal.in{animation:entra3d 1s cubic-bezier(.2,.7,.2,1) backwards}
+  #hoje{--ry:14deg;--rz:-4deg}
+  #proximos{--ry:-14deg;--rz:4deg}
+  @keyframes entra3d{from{opacity:0;transform:perspective(900px) rotateY(var(--ry)) rotateZ(var(--rz)) translateY(34px)}}
+  @media (prefers-reduced-motion:reduce){.sol::before,.nuvem,.balao,.flor,.brinq,.brinq.gira,.tcard.reveal.in{animation:none}.balao{bottom:12%}}
   .site-footer{padding:20px var(--gutter) 28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted)}
 </style>
 </head>
 <body>
-<div class="bg" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="bg" aria-hidden="true"><i></i><i></i><i></i><b class="sol"></b><b class="nuvem n1"></b><b class="nuvem n2"></b><b class="balao"></b><b class="flor"></b></div>
 <header class="site-header">
   <a class="brand" href="./" aria-label="Patati TV, início">
     <span class="brand-mark">pt<span class="dot">.</span></span>
@@ -182,6 +217,11 @@
   </section>
 
   <p class="dust" aria-hidden="true"><span>Hora de ver.</span><span>Hora de parar.</span></p>
+
+  <div class="brinq-area">
+    <div class="brinq-wrap"><button type="button" class="brinq" id="brinq" aria-label="Girar o brinquedo"></button></div>
+    <p class="mono tiny muted">TOQUE PARA GIRAR</p>
+  </div>
 
   <div id="aviso" class="warn" hidden></div>
 
@@ -227,8 +267,18 @@
   if(matchMedia('(prefers-reduced-motion:no-preference)').matches){
     addEventListener('scroll', () => { const y = scrollY; formas.forEach((f, k) => { f.style.marginTop = (y * (k+1) * -.06) + 'px'; }); }, {passive:true});
   }
-  // Roda 3D dos vídeos do dia (carrossel do Noa Vale)
   const CORES = ['var(--red)','var(--blue)','var(--green)','var(--yellow)'];
+  // Brinquedo: gira, troca de forma e de cor a cada toque
+  const FORMAS = ['polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)','circle(50%)','inset(0 round 30px)','polygon(50% 0,100% 100%,0 100%)'];
+  let brinqIdx = 0;
+  const brinq = $('#brinq');
+  brinq.addEventListener('click', () => {
+    if(brinq.classList.contains('gira')) return;
+    brinq.classList.add('gira');
+    setTimeout(() => { brinqIdx++; brinq.style.clipPath = FORMAS[brinqIdx % 4]; brinq.style.background = CORES[(brinqIdx + 3) % 4]; }, 320);
+    setTimeout(() => brinq.classList.remove('gira'), 700);
+  });
+  // Roda 3D dos vídeos do dia (carrossel do Noa Vale)
   const minutos = s => s.split(':').reverse().reduce((t, x, k) => t + Number(x) * Math.pow(60, k), 0) / 60;
   let rodaIdx = 0, rodaTimer = null, rodaN = 0, rodaR = 0;
   const movimento = !matchMedia('(prefers-reduced-motion:reduce)').matches;
