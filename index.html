@@ -114,6 +114,38 @@
     .reveal.in ol li{animation:none}
     .tcard.tilt{transition:none}
   }
+  /* ---- Efeitos do Noa Vale: roda 3D, dust, objetos soltos, passos ---- */
+  .roda{display:flex;flex-direction:column;gap:14px}
+  .carousel{position:relative;height:340px;perspective:1200px;perspective-origin:50% 40%}
+  .ring{position:absolute;inset:0;margin:auto;width:220px;height:280px;transform-style:preserve-3d;transition:transform 1.1s cubic-bezier(.22,.8,.2,1)}
+  .vcard{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:18px;border-radius:24px;border:6px solid #fff;background:var(--c);color:#fff;box-shadow:var(--shadow);backface-visibility:hidden;transform:rotateY(var(--a)) translateZ(var(--r))}
+  .vcard.y{color:var(--ink)}
+  .vcard .n{font-family:var(--font-script);font-size:96px;line-height:.8}
+  .vcard h3{margin:0;font-size:20px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+  .vcard .d{align-self:flex-start;margin-top:10px;font-family:var(--font-mono);font-size:11px;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.3)}
+  .vcard .go{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:50%;background:#fff;color:var(--c);display:grid;place-items:center;font-size:13px}
+  .vcard.y .go{color:var(--ink)}
+  .roda-foot{display:flex;align-items:center;justify-content:center;gap:18px;text-align:center}
+  .chev{background:none;border:0;cursor:pointer;color:var(--muted);font-size:42px;line-height:1;padding:0 8px;transition:color .2s,transform .2s}
+  .chev:hover{color:var(--accent);transform:scale(1.12)}
+  .steps{display:flex;gap:6px}
+  .steps button{position:relative;flex:var(--w) 1 0;min-width:0;background:none;border:0;padding:14px 0 0;cursor:pointer;text-align:left;color:var(--muted);font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;transition:color .3s}
+  .steps button i{position:absolute;top:0;left:0;right:0;height:7px;border-radius:4px;background:var(--c);opacity:.28;transition:opacity .3s}
+  .steps button.active{color:var(--ink)}
+  .steps button.active i{opacity:1}
+  .dust{display:flex;flex-direction:column;align-items:center;gap:6px;margin:14px 0;font-size:clamp(24px,6vw,40px);font-weight:500;letter-spacing:-.02em;color:var(--ink-2);text-align:center}
+  .dust span{animation:dust 7s ease-in-out infinite;text-shadow:0 0 12px rgba(35,32,58,.35),4px 2px 0 rgba(35,32,58,.12),-5px -3px 0 rgba(35,32,58,.1)}
+  .dust span:last-child{animation-delay:-3.5s}
+  @keyframes dust{0%,100%{opacity:.3;letter-spacing:.3em}50%{opacity:1;letter-spacing:-.02em}}
+  .scatter{position:absolute;inset:0;pointer-events:none;z-index:-1}
+  .toy{position:absolute;box-shadow:var(--shadow);animation:bob 5s ease-in-out infinite}
+  .toy.t1{width:56px;height:56px;border-radius:50%;background:var(--red);border:6px solid #fff;right:3%;top:2%;--r:0deg}
+  .toy.t2{width:46px;height:46px;border-radius:14px;background:var(--blue);border:6px solid #fff;right:20%;top:78%;--r:-12deg;animation-delay:-1.5s}
+  .toy.t3{width:58px;height:52px;background:var(--yellow);clip-path:polygon(50% 0,100% 100%,0 100%);right:1%;top:44%;--r:10deg;animation-delay:-3s;box-shadow:none}
+  .toy.t4{width:34px;height:34px;border-radius:50%;background:var(--green);border:5px solid #fff;right:30%;top:-2%;animation-delay:-2s}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(calc(var(--r,0deg) + 9deg))}}
+  @media (max-width:520px){.carousel{height:310px}.ring{width:190px;height:250px}.vcard .n{font-size:78px}.vcard h3{font-size:17px}}
+  @media (prefers-reduced-motion:reduce){.ring{transition:none}.dust span,.toy{animation:none}.dust span{opacity:1}}
   .site-footer{padding:20px var(--gutter) 28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted)}
 </style>
 </head>
@@ -136,7 +168,20 @@
     <p class="mono tiny"><span class="accent">HOJE NA TV</span> / 1 HORA, SEM TRABALHO</p>
     <h1 id="titulo">Patati de <em>hoje</em></h1>
     <p class="sub" id="sub">Carregando o plano…</p>
+    <div class="scatter" aria-hidden="true"><span class="toy t1"></span><span class="toy t2"></span><span class="toy t3"></span><span class="toy t4"></span></div>
   </section>
+
+  <section class="roda reveal" id="roda" hidden aria-label="Vídeos de hoje">
+    <div class="carousel"><div class="ring" id="ring"></div></div>
+    <div class="roda-foot">
+      <button class="chev" id="prev" aria-label="Vídeo anterior">&lsaquo;</button>
+      <p class="mono tiny"><span class="accent" id="cur-index">1</span> / <span id="cur-total">1</span> &nbsp; <span id="cur-title"></span></p>
+      <button class="chev" id="next" aria-label="Próximo vídeo">&rsaquo;</button>
+    </div>
+    <div class="steps" id="steps"></div>
+  </section>
+
+  <p class="dust" aria-hidden="true"><span>Hora de ver.</span><span>Hora de parar.</span></p>
 
   <div id="aviso" class="warn" hidden></div>
 
@@ -182,6 +227,38 @@
   if(matchMedia('(prefers-reduced-motion:no-preference)').matches){
     addEventListener('scroll', () => { const y = scrollY; formas.forEach((f, k) => { f.style.marginTop = (y * (k+1) * -.06) + 'px'; }); }, {passive:true});
   }
+  // Roda 3D dos vídeos do dia (carrossel do Noa Vale)
+  const CORES = ['var(--red)','var(--blue)','var(--green)','var(--yellow)'];
+  const minutos = s => s.split(':').reverse().reduce((t, x, k) => t + Number(x) * Math.pow(60, k), 0) / 60;
+  let rodaIdx = 0, rodaTimer = null, rodaN = 0, rodaR = 0;
+  const movimento = !matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function rodaMostra(i, vids){
+    rodaIdx = (i + rodaN) % rodaN;
+    $('#ring').style.transform = `translateZ(${-rodaR}px) rotateY(${-rodaIdx * 360 / rodaN}deg)`;
+    $('#cur-index').textContent = rodaIdx + 1;
+    $('#cur-title').textContent = curto(vids[rodaIdx].title);
+    document.querySelectorAll('#steps button').forEach((b, k) => b.classList.toggle('active', k === rodaIdx));
+  }
+  function montaRoda(vids){
+    rodaN = vids.length;
+    $('#roda').hidden = false;
+    const larg = $('#ring').offsetWidth || 220;
+    rodaR = Math.max(110, (larg / 2) / Math.tan(Math.PI / rodaN)) + 36;
+    $('#cur-total').textContent = rodaN;
+    $('#ring').innerHTML = vids.map((v, k) => {
+      const amarelo = k % 4 === 3;
+      return `<a class="vcard${amarelo ? ' y' : ''}" href="${esc(v.url)}" target="_blank" rel="noopener" style="--c:${CORES[k % 4]};--a:${k * 360 / rodaN}deg;--r:${rodaR}px"><span class="go" aria-hidden="true">▶</span><span class="n">${k + 1}</span><span><h3>${esc(curto(v.title))}</h3><span class="d">${esc(v.duracao)}</span></span></a>`;
+    }).join('');
+    $('#steps').innerHTML = vids.map((v, k) => `<button type="button" style="--c:${CORES[k % 4]};--w:${minutos(v.duracao).toFixed(2)}" aria-label="Ir ao vídeo ${k + 1}"><i></i>${esc(v.duracao)}</button>`).join('');
+    document.querySelectorAll('#steps button').forEach((b, k) => b.addEventListener('click', () => { rodaMostra(k, vids); rodaAuto(vids); }));
+    $('#prev').onclick = () => { rodaMostra(rodaIdx - 1, vids); rodaAuto(vids); };
+    $('#next').onclick = () => { rodaMostra(rodaIdx + 1, vids); rodaAuto(vids); };
+    $('#ring').onmouseenter = () => clearInterval(rodaTimer);
+    $('#ring').onmouseleave = () => rodaAuto(vids);
+    rodaMostra(0, vids);
+    rodaAuto(vids);
+  }
+  function rodaAuto(vids){ clearInterval(rodaTimer); if(movimento) rodaTimer = setInterval(() => rodaMostra(rodaIdx + 1, vids), 4200); }
   fetch('plano.json?v=' + Date.now(), {cache:'no-store'}).then(r => r.json()).then(p => {
     const dias = (p.dias || []).filter(d => d.videos && d.videos.length);
     if(!dias.length){ $('#sub').textContent = 'O plano está vazio. Peça para atualizar.'; return; }
@@ -197,6 +274,7 @@
     $('#tocar-txt').textContent = 'Tocar o pacote de ' + (ehHoje ? 'hoje' : nome(d0.data));
     $('#lista').innerHTML = d0.videos.map((v, i) => `<li style="--i:${i}"><a href="${esc(v.url)}" target="_blank" rel="noopener">${esc(curto(v.title))}</a> <span class="dur">${esc(v.duracao)}</span></li>`).join('');
     $('#hoje').hidden = false;
+    montaRoda(d0.videos);
     const resto = futuros.slice(1);
     if(resto.length){
       $('#dias').innerHTML = resto.map(d => `<div class="dia"><a class="p" href="${esc(pacote(d))}" target="_blank" rel="noopener">▶ Pacote de ${esc(nome(d.data))} (${esc(dm(d.data))}) · ${d.total_min} min</a><p class="meta">${d.videos.map(v => esc(curto(v.title))).join(' · ')}</p></div>`).join('');
