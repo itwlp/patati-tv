@@ -1,0 +1,17 @@
+{
+  "_ajuda": [
+    "Lido por atualizar-patati-tv.ps1. Edite e rode o script (ou espere a tarefa diária).",
+    "canais: cada canal tem a URL da aba Vídeos e a faixa de duração em segundos (minSeg a maxSeg).",
+    "porDia: quantos vídeos a TV mostra por dia. excluidos: ids que nunca entram, mesmo na faixa."
+  ],
+  "porDia": 5,
+  "canais": [
+    {
+      "nome": "Patati Patatá",
+      "url": "https://www.youtube.com/channel/UCe-BBpsnL89BMr6WbvBQ9dw/videos",
+      "minSeg": 900,
+      "maxSeg": 1200
+    }
+  ],
+  "excluidos": []
+}
